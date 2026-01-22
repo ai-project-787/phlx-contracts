@@ -49,6 +49,27 @@ jobs:
       - name: TypeScript lint
         run: cd typescript && npm run lint
 
+  python-validation:
+    name: Validate Python Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: cd python && pip install -e .[dev]
+
+      - name: Run mypy type checking
+        run: cd python && mypy src/
+
+      - name: Run tests
+        run: cd python && pytest
+
   openapi-validation:
     name: Validate OpenAPI Specs
     runs-on: ubuntu-latest

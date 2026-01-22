@@ -88,6 +88,34 @@ git tag typescript/v1.3.0
 git push origin typescript/v1.3.0
 ```
 
+### Python Packages
+Python package versions are prefixed with `python/`:
+```
+python/v1.0.0
+python/v1.1.0
+python/v2.0.0
+```
+
+**Usage**:
+```bash
+pip install phlx-contracts==1.2.0
+```
+
+Or in `requirements.txt`:
+```
+phlx-contracts>=1.2.0,<2.0.0
+```
+
+**Tagging**:
+```bash
+# Update pyproject.toml version first
+cd python
+# Edit pyproject.toml: version = "1.3.0"
+cd ..
+git tag python/v1.3.0
+git push origin python/v1.3.0
+```
+
 ## Examples
 
 ### Example 1: Adding a New Optional Field (MINOR)
@@ -192,24 +220,31 @@ type Asset struct {
    # For Go
    git tag go/v1.3.0
    git push origin go/v1.3.0
-   
+
    # For TypeScript
    git tag typescript/v1.3.0
    git push origin typescript/v1.3.0
+
+   # For Python
+   git tag python/v1.3.0
+   git push origin python/v1.3.0
    ```
 7. **GitHub Actions** automatically publishes the new version
 
 ## Synchronizing Versions
 
-**Rule**: Go and TypeScript versions should stay in sync when possible.
+**Rule**: Go, TypeScript, and Python versions should stay in sync when possible.
 
-If you make a breaking change to Go models, also update TypeScript types and bump both to the same major version:
+If you make a breaking change to Go models, also update TypeScript and Python types and bump all three to the same major version:
 ```
 go/v2.0.0
 typescript/v2.0.0
+python/v2.0.0
 ```
 
-If one language requires changes the other doesn't, versions can diverge temporarily, but should re-sync at the next breaking change.
+All three packages should share the same semantic version (e.g., `1.0.0`) across languages to indicate compatibility.
+
+If one language requires changes the others don't, versions can diverge temporarily, but should re-sync at the next breaking change.
 
 ## Handling Breaking Changes
 
