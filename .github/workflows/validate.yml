@@ -1,0 +1,72 @@
+name: Validate Contracts
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  go-validation:
+    name: Validate Go Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Go build
+        run: cd go && go build ./...
+
+      - name: Go vet
+        run: cd go && go vet ./...
+
+      - name: Go test
+        run: cd go && go test -v ./...
+
+  typescript-validation:
+    name: Validate TypeScript Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: cd typescript && npm install
+
+      - name: TypeScript build
+        run: cd typescript && npm run build
+
+      - name: TypeScript lint
+        run: cd typescript && npm run lint
+
+  openapi-validation:
+    name: Validate OpenAPI Specs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Swagger CLI
+        run: npm install -g @apidevtools/swagger-cli
+
+      - name: Validate OpenAPI specs
+        run: |
+          for file in openapi/*.yaml; do
+            echo "Validating $file..."
+            swagger-cli validate "$file"
+          done
