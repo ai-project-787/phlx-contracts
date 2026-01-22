@@ -1,0 +1,30 @@
+{
+  "name": "@ai-project-787/contracts",
+  "version": "1.0.0",
+  "description": "Shared data contracts for PHLX microservices (Go models and TypeScript types)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests yet\" && exit 0",
+    "lint": "tsc --noEmit",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "contracts",
+    "types",
+    "shared",
+    "microservices"
+  ],
+  "author": "AI Project 787",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
