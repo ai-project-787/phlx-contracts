@@ -1,6 +1,6 @@
 # PHLX Contracts
 
-Shared type contracts for Curetes.ai microservices ecosystem. This repository serves as the single source of truth for data models and event schemas used across all services.
+Shared type contracts for Phylax microservices ecosystem. This repository serves as the single source of truth for data models and event schemas used across all services.
 
 ## Overview
 

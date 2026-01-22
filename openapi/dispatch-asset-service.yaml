@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8086
     description: Local development
-  - url: http://dispatch-asset-service.curetes-dev.svc.cluster.local:8086
+  - url: http://dispatch-asset-service.platform-dev.svc.cluster.local:8086
     description: Kubernetes dev namespace
 paths:
   /api/v1/assets:

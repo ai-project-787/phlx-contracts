@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8087
     description: Local development
-  - url: http://mission-command-service.curetes-dev.svc.cluster.local:8087
+  - url: http://mission-command-service.platform-dev.svc.cluster.local:8087
     description: Kubernetes dev namespace
 paths:
   /api/v1/missions:

@@ -6,7 +6,7 @@ info:
 servers:
 - url: http://localhost:8085
   description: Local development
-- url: http://auth-service.curetes-dev.svc.cluster.local:8085
+- url: http://auth-service.platform-dev.svc.cluster.local:8085
   description: Kubernetes dev namespace
 paths:
   /api/v1/auth/login:
