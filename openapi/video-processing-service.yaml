@@ -1,0 +1,56 @@
+openapi: 3.0.3
+info:
+  title: Video Processing Service API
+  version: 1.0.0
+  description: Video upload, frame extraction, and AI analysis
+servers:
+  - url: http://localhost:8089
+    description: Local development
+paths:
+  /api/v1/videos:
+    get:
+      summary: List videos
+      tags: [Videos]
+      security: [{bearerAuth: []}]
+      responses:
+        "200":
+          description: List of videos
+    post:
+      summary: Upload video
+      tags: [Videos]
+      security: [{bearerAuth: []}]
+      responses:
+        "201":
+          description: Video uploaded
+  /api/v1/videos/{id}/frames:
+    post:
+      summary: Trigger frame extraction
+      tags: [Frames]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        "202":
+          description: Extraction started
+  /api/v1/frames/{id}/analyze:
+    post:
+      summary: Analyze frame with AI
+      tags: [AI Analysis]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        "202":
+          description: Analysis started
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Communication Hub Service API
+  version: 1.0.0
+  description: WebSocket real-time event distribution and notifications
+servers:
+  - url: http://localhost:8088
+    description: Local development
+paths:
+  /ws:
+    get:
+      summary: WebSocket connection endpoint
+      tags: [WebSocket]
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema: {type: string}
+      responses:
+        "101":
+          description: WebSocket connection established
+  /api/v1/notifications:
+    get:
+      summary: List notifications
+      tags: [Notifications]
+      security: [{bearerAuth: []}]
+      responses:
+        "200":
+          description: List of notifications
+    post:
+      summary: Send notification
+      tags: [Notifications]
+      security: [{bearerAuth: []}]
+      responses:
+        "201":
+          description: Notification sent
+  /api/v1/emergency-alerts:
+    post:
+      summary: Broadcast emergency alert
+      tags: [Emergency Alerts]
+      security: [{bearerAuth: []}]
+      responses:
+        "201":
+          description: Alert broadcasted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

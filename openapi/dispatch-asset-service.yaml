@@ -1,0 +1,169 @@
+openapi: 3.0.3
+info:
+  title: Dispatch Asset Service API
+  version: 1.0.0
+  description: Manages assets (vehicles, personnel, equipment) and their statuses
+servers:
+  - url: http://localhost:8086
+    description: Local development
+  - url: http://dispatch-asset-service.curetes-dev.svc.cluster.local:8086
+    description: Kubernetes dev namespace
+paths:
+  /api/v1/assets:
+    get:
+      summary: List all assets
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: status
+          in: query
+          schema: {type: string}
+        - name: type
+          in: query
+          schema: {type: string}
+      responses:
+        '200':
+          description: List of assets
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {$ref: '#/components/schemas/Asset'}
+    post:
+      summary: Create new asset
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/CreateAssetRequest'}
+      responses:
+        '201':
+          description: Asset created
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Asset'}
+  /api/v1/assets/{id}:
+    get:
+      summary: Get asset by ID
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: Asset details
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Asset'}
+    put:
+      summary: Update asset
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: '#/components/schemas/UpdateAssetRequest'}
+      responses:
+        '200':
+          description: Asset updated
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Asset'}
+  /api/v1/assets/{id}/status:
+    put:
+      summary: Update asset status
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status: {type: string, enum: [available, dispatched, returning, offline]}
+      responses:
+        '200':
+          description: Status updated
+          content:
+            application/json:
+              schema: {$ref: '#/components/schemas/Asset'}
+  /api/v1/assets/{id}/location:
+    put:
+      summary: Update asset location
+      tags: [Assets]
+      security: [{bearerAuth: []}]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [latitude, longitude]
+              properties:
+                latitude: {type: number}
+                longitude: {type: number}
+                altitude: {type: number}
+      responses:
+        '200':
+          description: Location updated
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Asset:
+      type: object
+      required: [id, name, type, status, useCase, latitude, longitude, lastUpdated, autoPositionEnabled]
+      properties:
+        id: {type: string}
+        name: {type: string}
+        type: {type: string}
+        status: {type: string, enum: [available, dispatched, returning, offline]}
+        useCase: {type: string}
+        teamId: {type: string}
+        latitude: {type: number}
+        longitude: {type: number}
+        altitude: {type: number}
+        batteryLevel: {type: integer}
+        lastUpdated: {type: string, format: date-time}
+        autoPositionEnabled: {type: boolean}
+    CreateAssetRequest:
+      type: object
+      required: [name, type, useCase, latitude, longitude]
+      properties:
+        name: {type: string}
+        type: {type: string}
+        useCase: {type: string}
+        latitude: {type: number}
+        longitude: {type: number}
+    UpdateAssetRequest:
+      type: object
+      properties:
+        name: {type: string}
+        teamId: {type: string}
+        altitude: {type: number}
