@@ -9,13 +9,28 @@ type GridSlot struct {
 	Position  int    `json:"position" bson:"position"` // 0=TL, 1=TR, 2=BL, 3=BR
 }
 
-// GridConfig defines a 2x2 grid composition configuration
+// GridConfig defines an NxN grid composition configuration (1x1 to 4x4)
 // Owner: composition-service
 type GridConfig struct {
 	SessionID string     `json:"session_id" bson:"session_id"`
 	MissionID string     `json:"mission_id,omitempty" bson:"mission_id,omitempty"` // Optional, for priority lookup
+	GridSize  int        `json:"grid_size,omitempty" bson:"grid_size,omitempty"`   // 1-4, defaults to 2 for backward compatibility
 	Slots     []GridSlot `json:"slots" bson:"slots"`
 	OutputURL string     `json:"output_url" bson:"output_url"`
+}
+
+// GetGridSize returns the grid size, defaulting to 2 for backward compatibility
+func (c GridConfig) GetGridSize() int {
+	if c.GridSize < 1 || c.GridSize > 4 {
+		return 2 // Default to 2x2 for backward compatibility
+	}
+	return c.GridSize
+}
+
+// MaxSlots returns the maximum number of slots for the grid size
+func (c GridConfig) MaxSlots() int {
+	size := c.GetGridSize()
+	return size * size
 }
 
 // CompositionStatus reports health status of a composition process
