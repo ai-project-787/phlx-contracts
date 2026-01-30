@@ -15,3 +15,4 @@ export * from './FireRisk';
 export * from './FireEvent';
 export * from './AssetEventGroup';
 export * from './AuditLog';
+export * from './Composition';
